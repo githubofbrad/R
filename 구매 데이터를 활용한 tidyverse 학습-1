@@ -1,0 +1,90 @@
+#tidyverse 불러오기
+library(tidyverse)
+
+
+#워킹 디렉토리 확인 및 지정
+getwd()
+
+
+
+#데이터 불러오기
+user_data <- read_csv("./Rstudy/MSUser_data_230703.csv")
+user_data
+
+
+
+#데이터 구조 확인
+user_data %>% dim()     #구조확인(1200x6)
+user_data %>% head()    #위 데이터 확인
+user_data %>% tail()    #아래 데이터 확인
+user_data %>% names()   #컬럼명 확인
+user_data %>% glimpse() #필요한 정보 한번에 확인 가능
+
+
+
+#데이터 변수 이름 변경(한글 → 영어로)
+#janitor::clean_names 사용
+origin_user_data <- names(user_data)
+user_data <- janitor::clean_names(user_data)
+user_data
+
+
+
+#dplyr
+ #1)행 관련: distinct, slice, filter
+user_data %>% 
+  distinct(juso)                     #중복없는 주소 가져오기
+
+user_data %>% 
+  distinct(juso, .keep_all = TRUE)   #중복없는 주소 가져오기 + 나머지도
+
+user_data %>% 
+  distinct(juso) %>% 
+  count()                           #중복없는 주소 가져오기 + 갯수 카운트  
+
+
+user_data %>% 
+  filter((seongbyeol == "M" ) 
+         & ( juso == "인천광역시" | juso == "서울특별시")) 
+
+user_data %>% 
+  filter(between(gumaenaljja, 20220601, 20220731))
+
+user_data %>% 
+  slice(10:12)                 #10번째부터 12번째 행 가져오기                       
+
+user_data %>% 
+  slice_max(gumaenaljja, n=3)  #구매날짜가 가장 큰 세 데이터 가져오기
+
+
+
+#2) 열 관련: select, mutate, arrange
+user_data %>% 
+  select(seongbyeol, juso)
+
+user_data %>% 
+  select(gumaeja:sangpummyeong)   #구매자부터 상표명까지 열 가져오기
+
+user_data %>% 
+  select(starts_with("g"))        #g로 시작하는 열 가져오기
+
+user_data %>% 
+  mutate(gumaenaljja_re = gumaenaljja - 1)
+
+user_data %>% 
+  mutate(gumae_year = substr(gumaenaljja,1,4)) %>% 
+  select(gumae_year, everything())   #년도만 추출하여 열 생성하고 해당 열을 앞으로 가져오기
+ 
+user_data <- user_data %>% 
+              mutate(gumae_year = substr(gumaenaljja,1,4)) %>% 
+              select(gumae_year, everything())    #새로운 열 생성 후 기존 테이블에 집어넣기
+
+str_split_fixed(user_data$juso,
+                pattern = " ", 2)  #주소를 띄어쓰기를 기준으로 2개로 나누라는 의미
+                                    #ex) '서울특별시 종로구' 와 같은 경우일 때 칼럼을 두 개로 나누기 위해서
+
+str_split_fixed(user_data$juso,
+                pattern = " ", 2[ ,1]) # 2개로 나눈 것 중에 첫 번째 열만 가져오라는 의미
+
+user_data %>% 
+  arrange(desc(sangpummyeong))
