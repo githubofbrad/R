@@ -1,0 +1,95 @@
+#tidyverse 실행
+library(tidyverse)
+
+
+
+#다양한 join
+left_join(tab_a, tab_b)  
+
+left_join(tab_a, tab_b, by = c("id" = "id1")) #칼럼명이 다를 경우 사용
+
+inner_join(tab_a, tab_b)
+
+full_join(tab_a, tab_b)
+
+semi_join(tab_a, tab_b)
+
+anti_join(tab_a, tab_b)
+
+
+
+#MSUser_data와 MSUser_data2 불러오기 및 합치기
+user_data <- read_csv("./Rstudy/MSUser_data_230703.csv")    #데이터 불러오기
+user_data
+
+user_data2 <- read_csv("./Rstudy/MSUser_data2.csv")         #데이터 불러오기2
+user_data2
+
+user_data <- janitor::clean_names(user_data)                #영어로 변환
+user_data
+
+user_data2 <- janitor::clean_names(user_data2)              #영어로 변환2
+user_data2
+
+user_data %>% 
+  left_join(user_data2) %>% 
+  filter(juso2 == "강남구")                                 #left join 후 filter
+
+
+
+#na처리
+x <- c(10,20,30,' ',40)
+x
+
+na_if(x,' ')  #na_if는 특정 값을 na로 바꿀 때 사용(여기서는 ' ' 값을 na로 바꿈)
+
+x_na <- na_if(x,' ')
+x_na
+
+coalesce(x_na, "0")  #na를 원하는 값으로 바꿀 때 사용
+
+replace_na(x_na, "0") #na를 원하는 값으로 바꿀 때 사용
+
+coalesce(x_na, c(0,0,0,"100",0)) #해당하는 열에 na가 있을 시 입력 값으로 변환
+
+
+
+#case_when 활용
+user_data %>% 
+  mutate(
+    gumaebeonho_new = case_when(
+      gumaebeonho >= 1 ~ "초",
+      gumaebeonho >= 100 ~ "중",
+      gumaebeonho >= 500 ~ "고",
+      TRUE ~ "else"))
+
+
+
+#group_by 활용
+ user_data %>% 
+ group_by(seongbyeol)  #성별로 그룹화
+
+user_data %>% 
+  arrange(sangpummyeong, .by_group = TRUE)  #그룹데이터 + arrange
+
+user_data %>% 
+  group_by(seongbyeol) %>% 
+  tally()                                   #성별로 그룹화한 후 갯수 세기
+
+user_data %>% 
+  group_keys()                              #어떤 그룹으로 묶여있는지 확인가능
+
+
+user_data %>% 
+  ungroup()                                 #그룹 해제
+
+
+user_data %>% 
+  group_by(sangpummyeong) %>% 
+  tally() %>% 
+  arrange(desc(n))                          #상품명으로 그룹화, 갯수 세기, 갯수 기준 오름차순 정렬
+
+user_data %>% 
+  group_by(seongbyeol, sangpummyeong) %>% 
+  tally() %>% 
+  slice_max(n, n=3)                         #성별과 상품명으로 그룹화, 갯수 세기, n을 기준으로 성별별 상품명별 큰 데이터 세 개 구하기
