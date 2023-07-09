@@ -1,0 +1,15 @@
+library(tidyverse)
+library(palmerpenguins)
+
+#결측값 확인하기: 열 별로 결측값 갯수 확인
+t(map_df(penguins, ~sum(is.na(.))))
+
+
+#결측값 제거
+data <- penguins %>% 
+        drop_na()
+
+#결측값 제거한 데이터 내에서 펭귄 종별 그룹화하여 갯수 세기
+count_data <- glimpse(data) %>% 
+              group_by(species) %>% 
+              tally()                   
