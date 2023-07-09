@@ -1,0 +1,14 @@
+#1# 라이브러리 불러오기
+library(esquisse)
+
+#2# Addins에서 ggplot2 builder 불러오기
+
+#3# Environment에서 List of data frame을 설정하여 그래프로 나타낼 데이터 불러오기 
+
+#4# Import data 실행
+
+#5# X, Y, fill, color, size, group, facet 항목들 각각에 데이터 드래그하여 설정 가능
+
+#6# 색상, 테마, 범례 및 제목 등 설정 가능
+
+#7# Code 항목에서 코드 복사하여 script에서 코드 작성 가능
