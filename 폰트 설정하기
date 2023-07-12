@@ -1,0 +1,33 @@
+##R에서 한글 폰트 바꾸는 2가지 방법: showtext, extrafont
+
+##showtext 활용법
+
+#1 구글 폰트 페이지 방문하기
+
+#2 폰트 선정 및 폰트 이름 확인하기
+
+#3 R에서 showtext 라이브러리 설치 및 실행하기
+  install.packages("showtext")
+  library(showtext)
+
+#4 font_add_google 함수 사용하여 폰트 등록하기
+  font_add_google(name = "폰트명",
+                  family = "R에서 사용할 이름 설정")
+
+#5 showtext 기능 켜기
+  showtext_auto(TRUE)
+
+#6 다음 예시처럼 활용 가능
+library(showtext)
+
+font_add_google(name = "폰트명",
+                family = "R에서 사용할 이름 설정")
+
+showtext_auto(TRUE)
+
+data + theme(
+       text = element_text(
+              family = "R에서 사용할 이름 설정",
+              size = 15
+        )
+)
