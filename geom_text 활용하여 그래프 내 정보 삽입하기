@@ -1,0 +1,21 @@
+🔷geom_text 활용하여 %정보 삽입하기🔷
+
+round(pie$prop, digits = 2) 
+ » 둘째자리까지 반올림
+
+paste0(round(pie$prop*100, digits = 2),"%")
+ » % 넣기
+
+
+p <- pie %>%
+  ggplot(aes(x = "", y = prop,
+             fill = 주소)) +
+  geom_bar(stat = "identity",
+           position = "stack",         » 쌓아서 그려짐
+           width = 1,
+           color = "black")+
+  geom_text(
+    aes(label = paste0(round(pie$prop*100, 
+                         digits = 2),"%")),      »비율 구한 것을 label로
+                         position = position_stack(vjust = 0.5),
+                         size = 5)
