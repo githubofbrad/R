@@ -1,0 +1,37 @@
+*p, q, d는 예시 데이터
+
+library(patchwork)
+
+
+1️⃣
+p+q 
+»그래프 양옆으로 그리기
+
+
+2️⃣
+(p+q) / (p + q) 
+»그래프 네 개 그리기
+
+
+3️⃣
+(q + p + d) +
+plot_layout(nrow = 3) 
+» 3개의 데이터를 row로 각각 나타내기 
+
+
+4️⃣
+(q + p) +
+plot_layout(ncol = 2,
+            widths = c(5,1)) 
+»가로비율 조정 예시
+
+
+5️⃣
+custom_layout <- "
+#BBBB
+AAACC
+"
+q1 + q1 + q1 +
+plot_layout(design = custom_layout) 
+» 각 그래프 비율 커스텀하기
+  » 'B,#,A,C' 갯수로 비율 조정 가능
