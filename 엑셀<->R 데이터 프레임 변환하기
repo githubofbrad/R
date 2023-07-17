@@ -1,0 +1,16 @@
+install.packages("datapasta")
+install.packages("clipr")
+
+
+===엑셀 자료 일부를 R로 옮길 때?===
+
+#1 가져올 엑셀 자료 일부를 범위 지정하고 ctrl + c
+#2 Addins에서 datapasts 검색하여 클릭하면 엑셀에서 지정한 범위가 tribble로 입력됨
+#3 변수 새로 지정하여 엑셀에서 가져온 데이터 활용 가능
+
+
+  
+===R자료를 엑셀로 옮길 때 각 셀에 맞게 넣으려면?===
+
+#1 엑셀로 가져올 결과값을 R에서 출력한 후 consol 창에서 clipr::write_clip(data) 실행하기
+#2 엑셀에서 ctrl + v 에서 결과값 셀에 맞게 가져오기
