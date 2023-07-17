@@ -1,0 +1,19 @@
+library(tidyverse)
+
+
+user_db <- tibble(
+  x = c(1, 2, 3, 4, NA),
+  y = c("김상순", "김민수", "김장구", NA, NA)
+)
+
+#1 결측값 들어있는 행 제거
+user_db %>% 
+  drop_na()
+
+
+#2 변수별로 결측값을 대체하고 싶은 값으로 대체할 때
+user_db %>% 
+  replace_na(
+    list(x = 0,
+         y = "-")
+  )
