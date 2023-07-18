@@ -1,0 +1,51 @@
+library(tidyverse)
+
+
+#특정 단어를 포함한 줄 위치 찾기
+grep("에어컨", user_data)
+
+user_data %>% 
+  str_which("에어컨")  #string 패키지의 str_which 사용
+
+
+
+#문자 길이 파악하기
+nchar(user_data)
+str_length(user_data)  #string 패키지의 str_length 사용
+
+
+
+#문자열 이어붙이기
+paste("유저","데이터")               #공백 존재
+paste0("유저", "데이터")             #공백 제거
+
+str_c("유저", "데이터")              #string 패키지 활용하여 이어붙이기
+str_c("유저", "데이터", sep = " ")   #string 패키지 활용하여 이어붙이기(공백존재)
+
+
+
+
+#문자열 부분 선택
+substr("유저 데이터", 1, 2)
+
+str_sub("유저 데이터",1, 2)   #string 패키지 활용하여 부분 선택하기
+
+
+
+#문자열 나눠주기
+strsplit("나이키 상의 빅스우시", split = " ")
+
+"나이키 상의 빅스우시" %>% 
+  str_split(pattern = " ")    #string 패키지 활용하여 문자열 나눠주기
+
+"6월|7월|8월|9월|10월" %>% 
+  str_split("\\|")            # 바를 기준으로 나눠주기(백슬래시 2개 넣어야함)
+
+
+
+#특정패턴 교체하기
+gsub("\\ ", "", "나는 밥을 먹는다")
+str_replace("나는 밥을 먹는다", "\\ ", "")  #string 패키지 활용하여 공백 없애기
+
+"6월?8월" %>% 
+  str_replace("\\?"," ")                    #string 패키지 활용하여 ?를 공백으로 바꾸기
