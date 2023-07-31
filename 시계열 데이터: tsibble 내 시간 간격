@@ -1,0 +1,38 @@
+install.packages("fpp3")
+
+library(fpp3)
+
+
+=====데이터 불러오기=====
+market <- read_csv("./Rstudy/상품_구매_데이터.csv")
+market
+
+
+=====칼럼 명 변경=====
+market<-market %>% 
+        janitor::clean_names()
+
+
+#1 년도 및 월 칼럼 추가
+market %>% 
+  mutate(month = yearmonth(ilja)) %>% 
+  as_tibble(key = ilja:gagyeog,
+            index = month)
+
+
+
+#2 년도 및 분기 칼럼 추가
+market %>% 
+  mutate(quartely = yearquarter(ilja))
+
+
+
+#3 년도 및 주 칼럼 추가
+market %>% 
+  mutate(weekly = yearweek(ilja))
+
+
+
+#4 년도 및 일자 칼럼 추가
+market %>% 
+  mutate(day = ymd(ilja))
