@@ -1,0 +1,40 @@
+###tidyverse 라이브러리 불러오기& excel csv 파일 불러와서 purchase에 넣어주기###
+library(tidyverse)
+
+purchase <- read_csv("./Rstudy/fruits_sales.csv")
+purchase
+
+
+###결측값 확인하기###
+
+purchase %>% 
+  is.na()
+
+colSums(is.na(purchase))
+
+t(map_df(purchase, ~sum(is.na(.))))
+
+
+###방법1) 결측값 제거
+purchase %>% 
+      drop_na()
+
+
+purchase %>% 
+  na.omit()
+
+
+###방법2) 결측값을 대체 값으로 변경
+summary(purchase) #대체 값으로 넣기위한 평균값 확인
+
+
+purchase %>% 
+  replace(is.na(purchase),437.5) #NA를 평균값인 437.5로 대체하기 
+
+
+purchase$count %>% 
+  replace_na(.,0)
+
+
+purchase[is.na(purchase)] <- 50
+purchase
