@@ -1,0 +1,102 @@
+#####전처리#####
+#라이브러리 불러오기
+library(tidyverse)
+
+#csv파일 불러오기
+data <- read_csv('./R_DATA/Food Beverage Industry.csv')
+data
+
+#데이터 확인
+data %>% head(3) 
+
+#null값 확인
+t(map_df(data, ~sum(is.na(.))))
+
+
+
+#####데이터 분석#####
+##1) Consume_frequency 순위 구하기
+#Consume_frequency 갯수 카운트
+data %>% 
+  group_by(Consume_frequency) %>% 
+  count()
+
+#Consume_frequency 갯수 카운트 후 순위 나열 후 cf_data 프레임 생성
+cf_data <- data %>% 
+  group_by(Consume_frequency) %>% 
+  count() %>% 
+  arrange(desc(n))
+
+#막대그래프 생성
+p <- ggplot(data = cf_data, aes(x = reorder(Consume_frequency, -n), y = n)) +
+  geom_bar(stat = "identity", fill = "gray") +
+  labs(title = "음료섭취 주기",
+       subtitle = "by 마비서",
+       x = "섭취주기",
+       y = "카운트") 
+p
+
+
+
+##2) Consume_time 순위 구하기
+#Consume_time 카운트
+data %>% 
+  group_by(Consume_time) %>% 
+  count()
+
+# Consume_time 순위나열 후 ct_data 생성
+ct_data <- data %>% 
+           group_by(Consume_time) %>% 
+           count() %>% 
+           arrange(desc(n))
+
+#막대그래프 생성
+p <- ggplot(data = ct_data, aes(x = reorder(Consume_time, -n), y=n)) +
+  geom_bar(stat = "identity", fill = "black")+
+  labs(title = "섭취 시간",
+       subtitle = "by 마비서",
+       x = "섭취 시간",
+       y = "카운트")
+p
+
+
+
+#3) Taste_experience와 Price_range 상관분석 및 회귀분석
+#select 함수 활용하여 두 컬럼 확인
+data %>% 
+  select(Taste_experience, Price_range)
+
+
+#Price_range 값 변경
+data <- data %>% 
+        mutate(Price_range2 = case_when(
+        Price_range == "Below 50" ~ 1,
+        Price_range == "50-99" ~ 2,
+        Price_range == "100-150" ~ 3,
+        Price_range == "Above 150" ~ 4
+        ))
+
+
+#컬럼 생성 확인(데이터 확인)
+view(data)
+
+
+#데이터확인2
+data %>% 
+  group_by(Price_range2) %>% 
+  count()
+
+
+#상관관계 확인
+x = data %>% 
+          select(Taste_experience)
+
+y = data %>% 
+          select(Price_range2)
+
+cor(x, y,  method = "pearson")
+
+
+#회귀분석
+model <- lm(Taste_experience ~ Price_range2, data = data)
+summary(model)
